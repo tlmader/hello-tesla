@@ -1,4 +1,7 @@
-# HelloTesla
+[![Build Status](https://travis-ci.com/tlmader/hello-tesla.svg?branch=master)](https://travis-ci.com/tlmader/hello-tesla)
+![Dependencies](https://david-dm.org/tlmader/hello-tesla.svg)
+
+# Hello Tesla
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.0.5.
 
