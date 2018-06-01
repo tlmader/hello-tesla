@@ -1,34 +1,38 @@
 language: node_js
-
 node_js:
-  - 8.9.0
-
+- 8.9.0
 sudo: required
-
 dist: trusty
-
 cache:
   yarn: true
-
-notifications:
-  slack: tlmader:TCHb5sywLfnNrFRdTvmfdYTQ
-
 addons:
   apt:
     sources:
-      - google-chrome
+    - google-chrome
     packages:
-      - google-chrome-stable
-      - google-chrome-beta
-
+    - google-chrome-stable
+    - google-chrome-beta
 before_install:
-  - export CHROME_BIN=chromium-browser
-  - export DISPLAY=:99.0
-  - sh -e /etc/init.d/xvfb start
-
+- export CHROME_BIN=chromium-browser
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
 install:
-  - yarn global add @angular/cli
-  - yarn install
-
+- yarn global add @angular/cli
+- yarn install
 script:
-  - yarn run build:prod
+- yarn run build:prod
+before_deploy:
+  - if [[ "$TRAVIS_BRANCH" = "master" ]]; then yarn run build:prod; fi
+deploy:
+  # Deploy master to the develop environment
+  - provider: firebase
+    skip_cleanup: true
+    token:
+      secure: "$FIREBASE_TOKEN"
+    project: hello-tesla
+    message: App successfully deployed to https://hello-tesla.firebaseapp.com/
+    on:
+      branch: master
+env:
+  global:
+    secure: fv/TadFlB13rerJ9rwcwgblGASSrvnuwM6n6qBdZcgzG1f2e9WwOde/MtAO3axAJrOFjXsYwO6uP0EmcY+EzEv5doz1neRPYL8BcS46s2GKlHcBhYHOUPDL5DpAQIULF1UZtR5n3aDtZ+nVEVuO2Z1+hm9wsI0cZqx+JswFFWhxqmRIaDOjBycXRVWFDu0ylI1+S0TAhGjgNqVaHbk9seZr7Nc59q73snEmyD9l3289LStVhzH606eBOLh4TMPsZuqHbksy/zAy0IGRQOCre86YSSx1m4eTj/6shll0zA16NpdjxK3Hgl4+9bJnQPPw7yfYUzi3PN3FAZQu10qyxIjAw54ckv4n18z1GDiClVTf9Cf8/2Alnj19gIueL4B/M+cykisHm6omACzergj7RCzxX9kIM2pkSvgQGugGYogcaHRYpTmOyc082TqF/6hhQK5QiuWYuB+sQY4jcPfp2glxgA0OKy4/89WYv2MMLk/NoW8w7wfjM9B4V031zWg/mgwleSZ6IJA+LRUxxuxCNbwO8bTUdk664qQOGJGwbYzw3USX6l7Cyqt8FcUvnryx2F0zHsnlPw6f0uSEUTVkcMfhmVavOGahSpaueEhRUi8s/mKvtkYOShKACN7JHUuoTC8GvF0oFu+Ecqe0pbhdMBIejQG4DoCW5usW5RQ/c9L8=
