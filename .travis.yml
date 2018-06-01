@@ -21,8 +21,6 @@ install:
 - yarn install
 script:
 - yarn run build:prod
-before_deploy:
-  - if [[ "$TRAVIS_BRANCH" = "master" ]]; then yarn run build:prod; fi
 deploy:
   # Deploy master to the develop environment
   - provider: firebase
